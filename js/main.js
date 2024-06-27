@@ -23,6 +23,7 @@ async function startGame() {
   document.querySelector('#winner h2').innerText = '';
   // Clear the stack of cards
   stackOfCards = [];
+  // Add a setting to adjust the number of cards
   const cardsToPlay = 16;
   localStorage.setItem('war', false);
   // Get a new deck and draw the 52 cards
@@ -77,16 +78,20 @@ async function nextMove() {
   if (war === 'true') {
     // If state of war, draw 4 cards (3 to burn and the one to play)
     console.log('War so drawing 4');
-    p1CardData = await drawCardAndUpdate('p1', 4);
-    p2CardData = await drawCardAndUpdate('p2', 4);
+    p1CardData = await drawCard('p1', 4);
+    p2CardData = await drawCard('p2', 4);
+    // Reset war status
+    localStorage.setItem('war', 'false');
   } else {
     // Draw a card from each pile & update the pictures
-    p1CardData = await drawCardAndUpdate('p1');
-    p2CardData = await drawCardAndUpdate('p2');
+    p1CardData = await drawCard('p1');
+    p2CardData = await drawCard('p2');
   }
-  localStorage.setItem('war', false);
+  // Creates an object to pass in - allows images to be updated simultaneously
+  let cardData = { p1: p1CardData, p2: p2CardData };
+  updateCardImage(cardData);
 
-  // Who won?
+  // Who won - check the first card - means it works irrespective of number of cards drawn
   const result = pickWinner(p1CardData[0], p2CardData[0]);
   // Update the class so the border colour changes
   setBorder(result);
@@ -95,8 +100,7 @@ async function nextMove() {
   addToStack(p1CardData);
   addToStack(p2CardData);
 
-  // If there is a winner
-  // Add both cards to the correct pile
+  // Add both cards to the correct pile then reset the pile
   if (result === 'p1') {
     await addCardsToPile(stackOfCards, 'p1Cards');
     stackOfCards = [];
@@ -108,7 +112,7 @@ async function nextMove() {
     localStorage.setItem('war', 'true');
     console.log('WAR!');
   }
-  // Update the number
+  // Update the number on screen
   const pileData = await getPileData('p1Cards');
   updateCardsRemaining(pileData);
 }
@@ -134,8 +138,8 @@ async function drawCard(pileName, count = 1) {
       // Problem? Most likely no cards left so game is over
       gameOver(pileName);
     }
-    const data = await res.json();
-    return data;
+    const cardData = await res.json();
+    return cardData.cards;
   } catch (err) {
     console.log(err);
   }
@@ -148,15 +152,13 @@ function updateCardsRemaining(piles) {
   }
 }
 
-function updateCardImage(player, cards) {
-  document.querySelector(`#${player}CardsImg`).src = cards[0].image;
-}
-
-async function drawCardAndUpdate(player, count = 1) {
-  const cardData = await drawCard(player, count);
-  // updateCardsRemaining(cardData.piles);
-  updateCardImage(player, cardData.cards);
-  return cardData.cards;
+function updateCardImage(cardData) {
+  console.log(cardData);
+  for (playerName in cardData) {
+    console.log(playerName);
+    document.querySelector(`#${playerName}CardsImg`).src =
+      cardData[playerName][0].image;
+  }
 }
 
 function pickWinner(card1, card2) {
@@ -198,12 +200,15 @@ function setBorder(winner) {
 
   // Apply the appropriate one
   if (winner === 'p1') {
+    document.body.style.backgroundColor = 'lightyellow';
     p1CardImg.classList.add('win');
     p2CardImg.classList.add('lose');
   } else if (winner === 'p2') {
+    document.body.style.backgroundColor = 'lightyellow';
     p1CardImg.classList.add('lose');
     p2CardImg.classList.add('win');
   } else {
+    document.body.style.backgroundColor = 'red';
     p1CardImg.classList.add('war');
     p2CardImg.classList.add('war');
   }
