@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="This is where your description goes" />
+    <meta name="keywords" content="one, two, three" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>War</title>
+
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <h1>Play War!</h1>
+    <section class="controls">
+      <button type="button" name="button" id="startGame">
+        Start a new game
+      </button>
+      <button type="button" name="button" id="nextMove">Next move</button>
+      <button type="button" name="button" id="autoPlay">Auto play</button>
+      <button type="button" name="button" id="stopAutoPlay">
+        Stop Auto play
+      </button>
+    </section>
+    <main class="game">
+      <div id="cardDiv">
+        <img
+          src="https://deckofcardsapi.com/static/img/back.png"
+          alt="p1 card"
+          id="p1CardsImg"
+          class=""
+        />
+        <span>v</span>
+        <img
+          src="https://deckofcardsapi.com/static/img/back.png"
+          alt="p2 card"
+          id="p2CardsImg"
+          class=""
+        />
+      </div>
+    </main>
+    <section class="stats">
+      <h2>Cards remaining</h2>
+      <h3>Player 1 - <span id="p1CardsCount"></span></h3>
+      <h3>Player 2 - <span id="p2CardsCount"></span></h3>
+    </section>
+    <div id="winner">
+      <h2></h2>
+    </div>
+
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>

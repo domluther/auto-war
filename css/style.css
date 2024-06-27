@@ -1,0 +1,58 @@
+/******************************************
+/* CSS
+/*******************************************/
+
+/* Box Model Hack */
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+#cardDiv {
+  display: flex;
+  align-items: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game > *,
+.controls > * {
+  margin: 0.5rem;
+}
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/
+
+#cardDiv img {
+  width: 200px;
+  border-radius: 0.8rem;
+  margin: 1rem;
+}
+
+.win {
+  border: solid green 5px;
+}
+
+.lose {
+  border: solid red 5px;
+}
+
+.war {
+  border: solid orange 8px;
+}
+#cardDiv span {
+  font-size: 3rem;
+}
